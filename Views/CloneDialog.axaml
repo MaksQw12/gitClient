@@ -1,0 +1,181 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
+        x:Class="gitclient.Views.CloneDialog"
+        Title="Clone Repository"
+        Width="520" Height="360"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#0A0A12"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1">
+
+	<Window.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="Background" Value="#0F0F1C"/>
+			<Setter Property="Foreground" Value="#C0C0D8"/>
+			<Setter Property="BorderBrush" Value="#1E1E30"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="Padding" Value="12,10"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="CaretBrush" Value="#7C6AF7"/>
+			<Setter Property="SelectionBrush" Value="#3D2E8C"/>
+		</Style>
+		<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+			<Setter Property="BorderBrush" Value="#7C6AF7"/>
+		</Style>
+		<Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+			<Setter Property="BorderBrush" Value="#2E2E50"/>
+		</Style>
+	</Window.Styles>
+
+	<Panel>
+		<Border Background="#0A0A12" PointerPressed="OnPointerPressed">
+			<Grid RowDefinitions="44,*,Auto">
+
+				<Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#11111E">
+					<Grid ColumnDefinitions="*,Auto" Margin="20,0">
+						<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+							<Border Width="22" Height="22" CornerRadius="6" Background="#13122A">
+								<svg:Svg Path="avares://gitclient/Assets/icons/git-clone.svg"
+										 Width="12" Height="12"
+										 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							</Border>
+							<TextBlock Text="Clone Repository" FontSize="13" FontWeight="SemiBold"
+									   Foreground="#8080A0" VerticalAlignment="Center"/>
+						</StackPanel>
+						<Button Grid.Column="1" Click="OnClose"
+								Background="Transparent" BorderThickness="0"
+								Padding="8,4" CornerRadius="6" Cursor="Hand"
+								VerticalAlignment="Center">
+							<Button.Styles>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="#1A1A2A"/>
+								</Style>
+							</Button.Styles>
+							<TextBlock Text="✕" FontSize="11" Foreground="#33334A"/>
+						</Button>
+					</Grid>
+				</Border>
+
+				<Grid Grid.Row="1" RowDefinitions="Auto,16,Auto,16,Auto" Margin="24,20,24,8">
+
+					<Grid Grid.Row="0" RowDefinitions="Auto,6,Auto">
+						<TextBlock Grid.Row="0" Text="REPOSITORY URL" FontSize="10" FontWeight="Bold"
+								   Foreground="#33334A" LetterSpacing="1.5"/>
+						<TextBox Grid.Row="2" x:Name="UrlBox"
+								 Watermark="https://github.com/user/repo.git"
+								 TextChanged="OnUrlChanged"
+								 GotFocus="OnUrlFocused"/>
+					</Grid>
+
+					<Grid Grid.Row="2" RowDefinitions="Auto,6,Auto">
+						<TextBlock Grid.Row="0" Text="CLONE INTO" FontSize="10" FontWeight="Bold"
+								   Foreground="#33334A" LetterSpacing="1.5"/>
+						<Grid Grid.Row="2" ColumnDefinitions="*,8,Auto">
+							<TextBox x:Name="PathBox" Grid.Column="0"
+									 Watermark="Select destination folder..."
+									 IsReadOnly="True"/>
+							<Button Grid.Column="2" Click="BrowsePath"
+									Background="#13131F" Foreground="#7070A0"
+									BorderBrush="#1E1E30" BorderThickness="1"
+									CornerRadius="8" Padding="14,10"
+									FontSize="12" Cursor="Hand">
+								<Button.Styles>
+									<Style Selector="Button:pointerover /template/ ContentPresenter">
+										<Setter Property="Background" Value="#1A1A2E"/>
+									</Style>
+								</Button.Styles>
+								<StackPanel Orientation="Horizontal" Spacing="6">
+									<svg:Svg Path="avares://gitclient/Assets/icons/folder.svg"
+											 Width="13" Height="13" VerticalAlignment="Center"/>
+									<TextBlock Text="Browse" VerticalAlignment="Center"/>
+								</StackPanel>
+							</Button>
+						</Grid>
+					</Grid>
+
+					<Border Grid.Row="4" x:Name="PreviewBorder"
+							IsVisible="False"
+							Background="#0D0D1A" CornerRadius="8"
+							BorderBrush="#13132A" BorderThickness="1"
+							Padding="12,10" Height="44">
+						<Grid ColumnDefinitions="Auto,10,*" VerticalAlignment="Center">
+							<Border Grid.Column="0" Width="24" Height="24" CornerRadius="6" Background="#13122A">
+								<svg:Svg Path="avares://gitclient/Assets/icons/git-branch.svg"
+										 Width="12" Height="12"
+										 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							</Border>
+							<StackPanel Grid.Column="2" Spacing="2" VerticalAlignment="Center">
+								<TextBlock x:Name="RepoNameText" FontSize="12" FontWeight="Medium"
+										   Foreground="#D0D0E8"/>
+								<TextBlock x:Name="FinalPathText" FontSize="10" Foreground="#44445A"/>
+							</StackPanel>
+						</Grid>
+					</Border>
+
+				</Grid>
+
+				<Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#11111E"
+						Padding="24,14">
+					<Grid ColumnDefinitions="*,Auto,8,Auto">
+						<TextBlock x:Name="StatusText" Grid.Column="0"
+								   FontSize="11" Foreground="#33334A"
+								   VerticalAlignment="Center"/>
+						<Button Grid.Column="1" Click="OnCancel"
+								Background="Transparent" Foreground="#44445A"
+								BorderThickness="1" BorderBrush="#1A1A2E"
+								CornerRadius="8" Padding="18,8"
+								FontSize="12" Cursor="Hand">
+							<Button.Styles>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="#1A1A2A"/>
+								</Style>
+							</Button.Styles>
+							Cancel
+						</Button>
+						<Button x:Name="CloneBtn" Grid.Column="3" Click="OnClone"
+								Background="#7C6AF7" Foreground="White"
+								BorderThickness="0" CornerRadius="8"
+								Padding="22,8" FontSize="12"
+								FontWeight="SemiBold" Cursor="Hand"
+								IsEnabled="False">
+							<Button.Styles>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="#9580FF"/>
+								</Style>
+								<Style Selector="Button:disabled /template/ ContentPresenter">
+									<Setter Property="Opacity" Value="0.4"/>
+								</Style>
+							</Button.Styles>
+							<StackPanel Orientation="Horizontal" Spacing="7">
+								<svg:Svg Path="avares://gitclient/Assets/icons/git-clone.svg"
+										 Width="12" Height="12" VerticalAlignment="Center"/>
+								<TextBlock Text="Clone" VerticalAlignment="Center"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+				</Border>
+
+			</Grid>
+		</Border>
+
+		<Border x:Name="RepoDropdown"
+				IsVisible="False"
+				Background="#13131F"
+				BorderBrush="#22223A"
+				BorderThickness="1"
+				CornerRadius="8"
+				MaxHeight="190"
+				Margin="24,130,24,0"
+				ZIndex="999"
+				VerticalAlignment="Top">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<StackPanel x:Name="RepoList" Spacing="0" Margin="4"/>
+			</ScrollViewer>
+		</Border>
+
+	</Panel>
+</Window>

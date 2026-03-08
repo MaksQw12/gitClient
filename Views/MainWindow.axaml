@@ -1,20 +1,135 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:gitclient.ViewModels"
+        xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="750"
         x:Class="gitclient.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="gitclient">
+        Title="Kommit"
+        Icon="avares://gitclient/Assets/icon.ico"
+        Width="1200" Height="750"
+        MinWidth="1200" MinHeight="750"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Background="#08080F">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid RowDefinitions="36,*">
 
+		<Border Grid.Row="0"
+                Background="#08080F"
+                BorderThickness="0,0,0,1"
+                BorderBrush="#16162A"
+                PointerPressed="TitleBar_PointerPressed">
+			<Grid ColumnDefinitions="Auto,*,Auto">
+				<StackPanel Grid.Column="0" Orientation="Horizontal"
+                            Spacing="8" Margin="14,0" VerticalAlignment="Center">
+					<Border Width="18" Height="18" CornerRadius="5" Background="#7C6AF7">
+						<Image Source="avares://gitclient/Assets/icon.ico"
+                               Width="16" Height="16"/>
+					</Border>
+					<TextBlock Text="Kommit" FontSize="12" FontWeight="SemiBold"
+                               Foreground="#555570" VerticalAlignment="Center"/>
+				</StackPanel>
+
+				<Border Grid.Column="1" Background="Transparent"/>
+
+				<StackPanel Grid.Column="2" Orientation="Horizontal"
+                            Spacing="0" VerticalAlignment="Stretch">
+					<Button Click="MinimizeClick"
+                            Width="46" Height="36"
+                            Background="Transparent" BorderThickness="0"
+                            VerticalAlignment="Stretch" Cursor="Hand">
+						<Button.Styles>
+							<Style Selector="Button:pointerover /template/ ContentPresenter">
+								<Setter Property="Background" Value="#1A1A2A"/>
+							</Style>
+						</Button.Styles>
+						<TextBlock Text="─" FontSize="12" Foreground="#555570"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Button>
+					<Button Click="MaximizeClick"
+                            Width="46" Height="36"
+                            Background="Transparent" BorderThickness="0"
+                            VerticalAlignment="Stretch" Cursor="Hand">
+						<Button.Styles>
+							<Style Selector="Button:pointerover /template/ ContentPresenter">
+								<Setter Property="Background" Value="#1A1A2A"/>
+							</Style>
+						</Button.Styles>
+						<TextBlock Text="□" FontSize="11" Foreground="#555570"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Button>
+					<Button Click="CloseClick"
+                            Width="46" Height="36"
+                            Background="Transparent" BorderThickness="0"
+                            VerticalAlignment="Stretch" Cursor="Hand">
+						<Button.Styles>
+							<Style Selector="Button:pointerover /template/ ContentPresenter">
+								<Setter Property="Background" Value="#C0323A"/>
+							</Style>
+						</Button.Styles>
+						<TextBlock Text="✕" FontSize="11" Foreground="#555570"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Button>
+				</StackPanel>
+			</Grid>
+		</Border>
+
+		<ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>
+
+		<ItemsControl Grid.Row="0" Grid.RowSpan="2"
+                      ItemsSource="{Binding Toasts}"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Bottom"
+                      Margin="0,0,20,20"
+                      IsHitTestVisible="False"
+                      ZIndex="999">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Border Background="{Binding Background}"
+                            BorderBrush="{Binding BorderColor}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="14,10"
+                            Margin="0,6,0,0"
+                            MinWidth="260" MaxWidth="380">
+						<Border.Styles>
+							<Style Selector="Border">
+								<Style.Animations>
+									<Animation Duration="0:0:0.2" FillMode="Forward">
+										<KeyFrame Cue="0%">
+											<Setter Property="Opacity" Value="0"/>
+											<Setter Property="TranslateTransform.Y" Value="16"/>
+										</KeyFrame>
+										<KeyFrame Cue="100%">
+											<Setter Property="Opacity" Value="1"/>
+											<Setter Property="TranslateTransform.Y" Value="0"/>
+										</KeyFrame>
+									</Animation>
+								</Style.Animations>
+							</Style>
+						</Border.Styles>
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<svg:Svg Path="{Binding IconPath}"
+                                     Width="14" Height="14"
+                                     VerticalAlignment="Center"/>
+							<TextBlock Text="{Binding Message}"
+                                       Foreground="#D0D0E8" FontSize="12"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"/>
+						</StackPanel>
+					</Border>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+	</Grid>
 </Window>

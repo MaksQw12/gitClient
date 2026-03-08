@@ -1,0 +1,319 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:gitclient.ViewModels"
+             xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
+             x:DataType="vm:SettingsPageViewModel"
+             x:Class="gitclient.Views.Pages.SettingsPage">
+
+	<UserControl.Styles>
+		<Style Selector="Button.tab">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="HorizontalContentAlignment" Value="Left"/>
+			<Setter Property="Padding" Value="12,9"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Width" Value="172"/>
+			<Setter Property="Foreground" Value="#7070A0"/>
+		</Style>
+		<Style Selector="Button.tab:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="#13131F"/>
+		</Style>
+		<Style Selector="Button.tab.active /template/ ContentPresenter">
+			<Setter Property="Background" Value="#17172A"/>
+		</Style>
+		<Style Selector="Button.tab.active TextBlock">
+			<Setter Property="Foreground" Value="#C0C0E0"/>
+		</Style>
+		<Style Selector="TextBox">
+			<Setter Property="Background" Value="#0F0F1C"/>
+			<Setter Property="Foreground" Value="#C0C0D8"/>
+			<Setter Property="BorderBrush" Value="#1E1E35"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="Padding" Value="12,9"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="CaretBrush" Value="#7C6AF7"/>
+			<Setter Property="SelectionBrush" Value="#3D2E8C"/>
+		</Style>
+		<Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+			<Setter Property="BorderBrush" Value="#2A2A55"/>
+		</Style>
+		<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+			<Setter Property="BorderBrush" Value="#7C6AF7"/>
+		</Style>
+		<Style Selector="NumericUpDown">
+			<Setter Property="Background" Value="#0F0F1C"/>
+			<Setter Property="Foreground" Value="#C0C0D8"/>
+			<Setter Property="BorderBrush" Value="#1E1E35"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontSize" Value="13"/>
+		</Style>
+		<Style Selector="Button.ghost">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#44445A"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Padding" Value="6,4"/>
+			<Setter Property="FontSize" Value="11"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="CornerRadius" Value="4"/>
+		</Style>
+		<Style Selector="Button.ghost:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="#1A1A2A"/>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid Background="#0D0D15" RowDefinitions="44,*">
+
+		<Border Grid.Row="0" Background="#09090F"
+				BorderThickness="0,0,0,1" BorderBrush="#13132A">
+			<Grid ColumnDefinitions="Auto,Auto,*">
+				<Button Classes="ghost" Command="{Binding GoBackCommand}"
+						Margin="8,0" VerticalAlignment="Center"
+						ToolTip.Tip="Back">
+					<svg:Svg Path="avares://gitclient/Assets/icons/back.svg" Width="14" Height="14"/>
+				</Button>
+				<Border Grid.Column="1" Width="1" Background="#16162A" Margin="0,10"/>
+				<TextBlock Grid.Column="2" Text="Settings"
+						   FontSize="12" FontWeight="SemiBold"
+						   Foreground="#555570" VerticalAlignment="Center"
+						   Margin="10,0"/>
+			</Grid>
+		</Border>
+
+		<Grid Grid.Row="1" ColumnDefinitions="188,1,*">
+
+			<DockPanel Grid.Column="0" Background="#09090F">
+				<StackPanel DockPanel.Dock="Top" Margin="8,16,8,0" Spacing="2">
+
+					<Button Classes="tab" Command="{Binding SelectTabCommand}"
+							CommandParameter="profile"
+							Classes.active="{Binding IsProfileTab}">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<svg:Svg Path="avares://gitclient/Assets/icons/profile.svg" Width="13" Height="13"/>
+							<TextBlock Text="Profile" FontSize="12" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Button>
+
+					<Button Classes="tab" Command="{Binding SelectTabCommand}"
+							CommandParameter="git"
+							Classes.active="{Binding IsGitTab}">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<svg:Svg Path="avares://gitclient/Assets/icons/git-branch.svg" Width="13" Height="13"/>
+							<TextBlock Text="Git" FontSize="12" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Button>
+
+					<Button Classes="tab" Command="{Binding SelectTabCommand}"
+							CommandParameter="integrations"
+							Classes.active="{Binding IsIntegrationsTab}">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<svg:Svg Path="avares://gitclient/Assets/icons/fetch.svg" Width="13" Height="13"/>
+							<TextBlock Text="Integrations" FontSize="12" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Button>
+
+					<Button Classes="tab" Command="{Binding SelectTabCommand}"
+							CommandParameter="performance"
+							Classes.active="{Binding IsPerformanceTab}">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<svg:Svg Path="avares://gitclient/Assets/icons/diff.svg" Width="13" Height="13"/>
+							<TextBlock Text="Performance" FontSize="12" VerticalAlignment="Center"/>
+						</StackPanel>
+					</Button>
+
+				</StackPanel>
+			</DockPanel>
+
+			<Border Grid.Column="1" Background="#11111E"/>
+
+			<Grid Grid.Column="2" RowDefinitions="*,Auto">
+
+				<ScrollViewer Grid.Row="0" Padding="36,28,36,12">
+					<StackPanel MaxWidth="500">
+
+						<StackPanel Spacing="20" IsVisible="{Binding IsProfileTab}">
+							<StackPanel Spacing="4">
+								<TextBlock Text="Profile" FontSize="16" FontWeight="SemiBold" Foreground="#D0D0E8"/>
+								<TextBlock Text="Your identity used for git commits" FontSize="12" Foreground="#44445A"/>
+							</StackPanel>
+							<Border Background="#0D0D18" CornerRadius="10"
+									BorderBrush="#16162A" BorderThickness="1" Padding="20,18">
+								<StackPanel Spacing="16">
+									<StackPanel Spacing="6">
+										<TextBlock Text="Display name" FontSize="11" FontWeight="Medium"
+												   Foreground="#55556A" LetterSpacing="0.5"/>
+										<TextBox Text="{Binding UserName}" Watermark="Your name"/>
+									</StackPanel>
+									<StackPanel Spacing="6">
+										<TextBlock Text="Email address" FontSize="11" FontWeight="Medium"
+												   Foreground="#55556A" LetterSpacing="0.5"/>
+										<TextBox Text="{Binding UserEmail}" Watermark="your@email.com"/>
+									</StackPanel>
+								</StackPanel>
+							</Border>
+							<Border Background="#0A1A12" CornerRadius="8"
+									BorderBrush="#1A3A28" BorderThickness="1" Padding="14,10">
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<svg:Svg Path="avares://gitclient/Assets/icons/check.svg" Width="12" Height="12"/>
+									<TextBlock Text="Saving will also update your global git config (user.name and user.email)"
+											   FontSize="11" Foreground="#4A8A6A" TextWrapping="Wrap"/>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+
+						<StackPanel Spacing="20" IsVisible="{Binding IsGitTab}">
+							<StackPanel Spacing="4">
+								<TextBlock Text="Git" FontSize="16" FontWeight="SemiBold" Foreground="#D0D0E8"/>
+								<TextBlock Text="Repository and fetch behaviour" FontSize="12" Foreground="#44445A"/>
+							</StackPanel>
+							<Border Background="#0D0D18" CornerRadius="10"
+									BorderBrush="#16162A" BorderThickness="1" Padding="20,18">
+								<StackPanel Spacing="0">
+									<StackPanel Spacing="6" Margin="0,0,0,16">
+										<TextBlock Text="Default branch name" FontSize="11"
+												   FontWeight="Medium" Foreground="#55556A"/>
+										<TextBox Text="{Binding DefaultBranchName}" Watermark="main"/>
+									</StackPanel>
+									<Border BorderThickness="0,1,0,0" BorderBrush="#13132A" Padding="0,14,0,14">
+										<Grid ColumnDefinitions="*,Auto">
+											<StackPanel Spacing="2">
+												<TextBlock Text="Auto fetch" FontSize="13" Foreground="#A0A0C0"/>
+												<TextBlock Text="Automatically fetch from remote in background"
+														   FontSize="11" Foreground="#44445A"/>
+											</StackPanel>
+											<ToggleSwitch Grid.Column="1" IsChecked="{Binding AutoFetchEnabled}"
+														  OnContent="" OffContent="" Margin="0"/>
+										</Grid>
+									</Border>
+									<Border BorderThickness="0,1,0,0" BorderBrush="#13132A" Padding="0,14,0,14"
+											IsVisible="{Binding AutoFetchEnabled}">
+										<Grid ColumnDefinitions="*,Auto">
+											<StackPanel Spacing="2">
+												<TextBlock Text="Fetch interval" FontSize="13" Foreground="#A0A0C0"/>
+												<TextBlock Text="Minutes between fetches" FontSize="11" Foreground="#44445A"/>
+											</StackPanel>
+											<NumericUpDown Grid.Column="1" Value="{Binding AutoFetchInterval}"
+														   Minimum="5" Maximum="60" Increment="5" Width="110"/>
+										</Grid>
+									</Border>
+									<Border BorderThickness="0,1,0,0" BorderBrush="#13132A" Padding="0,14,0,0">
+										<Grid ColumnDefinitions="*,Auto">
+											<StackPanel Spacing="2">
+												<TextBlock Text="Fetch on open" FontSize="13" Foreground="#A0A0C0"/>
+												<TextBlock Text="Fetch when opening a repository"
+														   FontSize="11" Foreground="#44445A"/>
+											</StackPanel>
+											<ToggleSwitch Grid.Column="1" IsChecked="{Binding FetchOnOpen}"
+														  OnContent="" OffContent="" Margin="0"/>
+										</Grid>
+									</Border>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+
+						<StackPanel Spacing="20" IsVisible="{Binding IsIntegrationsTab}">
+							<StackPanel Spacing="4">
+								<TextBlock Text="Integrations" FontSize="16" FontWeight="SemiBold" Foreground="#D0D0E8"/>
+								<TextBlock Text="Connect to external services" FontSize="12" Foreground="#44445A"/>
+							</StackPanel>
+							<Border Background="#0D0D18" CornerRadius="10"
+									BorderBrush="#16162A" BorderThickness="1" Padding="20,18">
+								<StackPanel Spacing="16">
+									<StackPanel Spacing="4">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<svg:Svg Path="avares://gitclient/Assets/icons/git-branch.svg" Width="13" Height="13"/>
+											<TextBlock Text="GitHub" FontSize="13" FontWeight="SemiBold" Foreground="#C0C0E0"/>
+										</StackPanel>
+										<TextBlock Text="Personal Access Token for browsing and cloning your repos"
+												   FontSize="11" Foreground="#44445A"/>
+									</StackPanel>
+									<StackPanel Spacing="6">
+										<TextBlock Text="Personal Access Token" FontSize="11"
+												   FontWeight="Medium" Foreground="#55556A"/>
+										<TextBox Text="{Binding GitHubToken}"
+												 Watermark="ghp_xxxxxxxxxxxx"
+												 PasswordChar="•"/>
+										<StackPanel Spacing="4">
+											<TextBlock FontSize="11" Foreground="#33334A">
+												<Run Text="Requires "/>
+												<Run Text="repo" Foreground="#7C6AF7" FontFamily="Consolas"/>
+												<Run Text=" scope - create at github.com/settings/tokens"/>
+											</TextBlock>
+											<Button Command="{Binding OpenGitHubTokenPageCommand}"
+													Background="Transparent" BorderThickness="0"
+													Padding="0" Cursor="Hand" HorizontalAlignment="Left">
+												<Button.Styles>
+													<Style Selector="Button:pointerover TextBlock">
+														<Setter Property="TextDecorations" Value="Underline"/>
+													</Style>
+												</Button.Styles>
+												<StackPanel Orientation="Horizontal" Spacing="5">
+													<svg:Svg Path="avares://gitclient/Assets/icons/fetch.svg" Width="11" Height="11"/>
+													<TextBlock Text="Open GitHub token page" FontSize="11" Foreground="#7C6AF7"/>
+												</StackPanel>
+											</Button>
+										</StackPanel>
+									</StackPanel>
+									<Border Background="#0A1A12" CornerRadius="8"
+											BorderBrush="#1A3A28" BorderThickness="1" Padding="12,8"
+											IsVisible="{Binding IsGitHubConnected}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<svg:Svg Path="avares://gitclient/Assets/icons/check.svg" Width="12" Height="12"/>
+											<TextBlock Text="{Binding GitHubUserInfo}" FontSize="12" Foreground="#5EE89A"/>
+										</StackPanel>
+									</Border>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+
+						<StackPanel Spacing="20" IsVisible="{Binding IsPerformanceTab}">
+							<StackPanel Spacing="4">
+								<TextBlock Text="Performance" FontSize="16" FontWeight="SemiBold" Foreground="#D0D0E8"/>
+								<TextBlock Text="Tune for your repository size" FontSize="12" Foreground="#44445A"/>
+							</StackPanel>
+							<Border Background="#0D0D18" CornerRadius="10"
+									BorderBrush="#16162A" BorderThickness="1" Padding="20,18">
+								<Grid ColumnDefinitions="*,Auto">
+									<StackPanel Spacing="2">
+										<TextBlock Text="Commits to load" FontSize="13" Foreground="#A0A0C0"/>
+										<TextBlock Text="Higher values slow down large repositories"
+												   FontSize="11" Foreground="#44445A"/>
+									</StackPanel>
+									<NumericUpDown Grid.Column="1" Value="{Binding CommitLoadLimit}"
+												   Minimum="50" Maximum="2000" Increment="50" Width="120"/>
+								</Grid>
+							</Border>
+						</StackPanel>
+
+					</StackPanel>
+				</ScrollViewer>
+
+				<Border Grid.Row="1" Background="#09090F"
+						BorderThickness="0,1,0,0" BorderBrush="#13132A"
+						Padding="36,12">
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBlock Text="{Binding SaveStatus}"
+								   FontSize="12" Foreground="#44445A" VerticalAlignment="Center"/>
+						<Button Grid.Column="1" Command="{Binding SaveCommand}"
+								Background="#7C6AF7" Foreground="White"
+								BorderThickness="0" CornerRadius="8"
+								Padding="20,9" FontSize="12" FontWeight="SemiBold" Cursor="Hand">
+							<Button.Styles>
+								<Style Selector="Button:pointerover /template/ ContentPresenter">
+									<Setter Property="Background" Value="#9580FF"/>
+								</Style>
+							</Button.Styles>
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<svg:Svg Path="avares://gitclient/Assets/icons/check.svg" Width="12" Height="12"/>
+								<TextBlock Text="Save settings" VerticalAlignment="Center"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+				</Border>
+
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>

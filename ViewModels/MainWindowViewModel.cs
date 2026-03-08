@@ -1,6 +1,21 @@
-﻿namespace gitclient.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using gitclient.Services;
+using System.Collections.ObjectModel;
+
+namespace gitclient.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
+    [ObservableProperty]
+    private object? currentPage;
+    [ObservableProperty] 
+    private object? _previousPage;
+    public ObservableCollection<Toast> Toasts => ToastService.Instance.Toasts;
+
+    public MainWindowViewModel()
+    {
+        currentPage = new StartPage();
+    }
+
+
 }
